@@ -1,0 +1,211 @@
+{
+	"info": {
+		"_postman_id": "f50710e2-97c1-4736-bbc4-2ff92ff7658f",
+		"name": "stest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "adduser",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\":\"lakshmi\",\n    \"name\":\"Lakshmi\"\n    \n    \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/users",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"users"
+					],
+					"query": [
+						{
+							"key": "hnn",
+							"value": "yhy",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteuser",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\":\"lakshmi\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/user",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "sendmessage",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"action\":\"sendmessage\",\n    \"username\":\"kumar\",\n    \"receivername\":\"siva\",\n    \"message\":\"ergwerh\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/chat",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"chat"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getallmessage",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\":\"kumar\",\n    \"receiver-username\":\"siva\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/chat",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"chat"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addcontact",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\":\"sri\",\n    \"contact-username\":\"ram\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/contact",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"contact"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getallcontact",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\":\"ram\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/contact",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"contact"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deletecontact",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\":\"sri\",\n    \"contact-username\":\"ram\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/contact",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"contact"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
