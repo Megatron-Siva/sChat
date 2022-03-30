@@ -226,7 +226,7 @@ public class Main extends HttpServlet {
         response.setContentType("application/json");
         JSONObject jout = new JSONObject();
         try {
-            if (pathInfo.equals("/users")) {
+            if (pathInfo.equals("/user")) {
 //                addUser
                 String username = existGetString(payload, "username");
                 String name = existGetString(payload, "name");

@@ -20,13 +20,13 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/users",
+					"raw": "localhost:8080/user",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"users"
+						"user"
 					],
 					"query": [
 						{
