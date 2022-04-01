@@ -21,7 +21,7 @@ import java.util.HashMap;
 public class Main extends HttpServlet {
     Connection con;
     String status = "status", success = "success", fail = "fail", message = "meassage";
-    PreparedStatement insertuser, deleteuser, selectuser, sendmessage, getallmessage, addcontact, updatereceivetime;
+    PreparedStatement insertuser, deleteuser, selectuser, sendmessage, getallmessage, addcontact, updatereceivetime,updateuser;
 
     public Main() {
 
@@ -34,6 +34,7 @@ public class Main extends HttpServlet {
             sendmessage = con.prepareStatement("insert into message (senderid,receiverid,message) values(?,?,?)");
             getallmessage = con.prepareStatement("select * from message where (senderid=? and receiverid=?) or (senderid=? and receiverid=?) order by sendtime");
             updatereceivetime = con.prepareStatement("update message set receivetime=current_timestamp where senderid=? and receiverid=?");
+            updateuser=con.prepareStatement("update user set name =? where username=?");
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
@@ -57,12 +58,6 @@ public class Main extends HttpServlet {
         return payload;
     }
 
-
-    JSONObject jsonbuilder() {
-        JSONObject j = new JSONObject();
-        return j;
-    }
-
     String existGetString(JSONObject j, String s) {
         if (j.containsKey(s)) {
             return String.valueOf(j.get(s));
@@ -74,16 +69,38 @@ public class Main extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-
         JSONObject payload = requesttojson(request);
         String pathInfo = request.getPathInfo();
         String out = "Sorry,Nothing here";
         response.setContentType("application/json");
         JSONObject jout = new JSONObject();
-        JSONObject j = new JSONObject();
+        String requri = request.getRequestURI().substring(
+                request.getContextPath().length() + 1);
 
         try {
-            if (pathInfo.equals("/contact")) {
+            if(pathInfo.startsWith("/user") && pathInfo.length()>5){
+                String username=pathInfo.substring(6);
+                if (Strings.isNullOrEmpty(username)) {
+                    jout.put(status, fail);
+                    jout.put(message, "Enter valid username");
+                    response.getOutputStream().println(String.valueOf(jout));
+                    return;
+                }
+                selectuser.setString(1,username);
+                ResultSet rs=selectuser.executeQuery();
+                if(rs.next()) {
+                    jout.put(username, rs.getString(5));
+                    response.getOutputStream().println(String.valueOf(jout));
+                    return;
+                }
+                else {
+                    jout.put(status, fail);
+                    jout.put("message", "No such a username exist");
+                    response.getOutputStream().println(String.valueOf(jout));
+                    return;
+                }
+            }
+            else if (pathInfo.equals("/contact")) {
                 String username = existGetString(payload, "username");
                 if (Strings.isNullOrEmpty(username)) {
                     jout.put(status, fail);
@@ -180,6 +197,7 @@ public class Main extends HttpServlet {
                                 String sendtime = rs.getString(5);
                                 String receivetime = rs.getString(6);
                                 JSONObject collect = new JSONObject();
+                                collect.put("send-time",sendtime);
                                 collect.put("sender-username", idname.get(senderid));
                                 collect.put("receiver-username", idname.get(receiverid));
                                 collect.put("message", message);
@@ -190,7 +208,7 @@ public class Main extends HttpServlet {
                                     collect.put("receive-time", receivetime);
                                 }
                                 JSONObject conatinarr = new JSONObject();
-                                conatinarr.put(sendtime, collect);
+                                conatinarr.put(rs.getInt(1), collect);
                                 marr.add(conatinarr);
                             }
                             jout.put("messages", marr);
@@ -406,18 +424,22 @@ public class Main extends HttpServlet {
         String out = "Sorry,Nothing here";
         JSONObject jout = new JSONObject();
         try {
-
-
-            if (pathInfo == null || pathInfo.equals("/")) {
-                out = "Welcome Home";
-
-            } else if (pathInfo.equals("/user")) {
-
-
-            } else if (pathInfo.equals("/chat")) {
-                out = "chat";
+            if(pathInfo.equals("/user")){
+                String username=request.getParameter("username");
+                String name=request.getParameter("name");
+                if (Strings.isNullOrEmpty(username)) {
+                    jout.put(status, fail);
+                    jout.put(message, "Enter valid username");
+                    response.getOutputStream().println(String.valueOf(jout));
+                    return;
+                }
+                updateuser.setString(1,name);
+                updateuser.setString(2,username);
+                updateuser.executeUpdate();
+                jout.put(status, success);
+                response.getOutputStream().println(String.valueOf(jout));
+                return;
             }
-
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -426,8 +448,6 @@ public class Main extends HttpServlet {
 
 
         }
-        response.getOutputStream().println(String.valueOf(jout));
-
     }
 
     @Override
